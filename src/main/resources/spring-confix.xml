@@ -2,13 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
-	<context:component-scan base-package="com.kishore"></context:component-scan>
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<context:component-scan base-package="com.java"></context:component-scan>
 	<context:annotation-config></context:annotation-config>
+	<tx:annotation-driven transaction-manager="txnManager" />
+
 	<!-- <bean id="printBean" class="com.kishore.beans.PrintBeanProps"></bean> -->
 
 	<bean id="hikariDatasource" class="com.zaxxer.hikari.HikariDataSource">
@@ -16,20 +21,18 @@
 		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/employees" />
 		<property name="username" value="root" />
 		<property name="password" value="kishore" />
-		<property name="maximumPoolSize" value="5" />
+		<property name="maximumPoolSize" value="1" />
 	</bean>
 
 
 
 
-	<!-- <bean id="hikariDatasource" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/employees" />
-		<property name="username" value="root" />
-		<property name="password" value="kishore" />
-		<property name="maximumPoolSize" value="5" />
-	</bean> -->
-	
+	<!-- <bean id="hikariDatasource" class="com.zaxxer.hikari.HikariConfig"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> <property 
+		name="jdbcUrl" value="jdbc:mysql://localhost:3306/employees" /> <property 
+		name="username" value="root" /> <property name="password" value="kishore" 
+		/> <property name="maximumPoolSize" value="5" /> </bean> -->
+
 
 
 	<bean id="sessionFactory"
@@ -42,6 +45,14 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
+				<!-- <prop key="hibernate.current_session_context_class">thread</prop> -->
+
+				<!-- Second level Caching -->
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
+ 				 <prop key="net.sf.ehcache.configurationResourceName">ehcache.xml</prop>
+
 			</props>
 		</property>
 
@@ -51,25 +62,28 @@
 			</list>
 		</property>
 
+
 		<!-- <property name="annotatedClasses"> <list> <value>/hibernate/Stock.hbm.xml</value> 
 			</list> </property> -->
 	</bean>
-	
-	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-	
+
+	<!-- <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager"> 
+		<property name="sessionFactory" ref="sessionFactory"/> </bean> -->
+
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
 		<property name="checkWriteOperations" value="false" />
 		<property name="sessionFactory">
-			<ref bean="sessionFactory"/>
+			<ref bean="sessionFactory" />
 		</property>
 	</bean>
-	
-	<bean id="employeeDaoImpl" class="com.java.dao.impl.EmployeeDaoImpl">
-		<property name="transactionManager">
-			<ref bean="transactionManager"/>
-		</property>
-	
+
+	<!-- <bean id="employeeDaoImpl" class="com.java.dao.impl.EmployeeDaoImpl"> 
+		<property name="hibernateTemplate"> <ref bean="hibernateTemplate"/> </property> 
+		</bean> -->
+
+
+	<bean id="txnManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>

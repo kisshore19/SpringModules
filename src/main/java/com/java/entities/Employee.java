@@ -1,6 +1,6 @@
 package com.java.entities;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,14 +8,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "employees")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@DynamicUpdate(true)
 public class Employee implements Serializable {
 	private static final long serialVersionUID = -7633126471274405356L;
 
 	@Id
-	//@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "emp_no")
 	private Integer empNo;
 	@Column(name = "birth_date")
@@ -26,6 +34,8 @@ public class Employee implements Serializable {
 	private String lastName;
 	@Column(name = "gender")
 	private String gender;
+	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "hire_date")
 	private Date hireDate;
 
