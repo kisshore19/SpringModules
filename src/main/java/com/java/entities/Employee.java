@@ -1,12 +1,16 @@
 package com.java.entities;
+
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,7 +27,7 @@ public class Employee implements Serializable {
 	private static final long serialVersionUID = -7633126471274405356L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "emp_no")
 	private Integer empNo;
 	@Column(name = "birth_date")
@@ -34,12 +38,16 @@ public class Employee implements Serializable {
 	private String lastName;
 	@Column(name = "gender")
 	private String gender;
-	
+
 	@Temporal(TemporalType.DATE)
 	@Column(name = "hire_date")
 	private Date hireDate;
+	
+/*	@OneToOne
+	@JoinColumn(name="emp_no")
+	private Salary salary;*/
 
-	public Integer getEmpNo() {
+	public Integer getEmpNo(){
 		return empNo;
 	}
 
@@ -87,4 +95,11 @@ public class Employee implements Serializable {
 		this.hireDate = hireDate;
 	}
 
+	/*public Salary getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Salary salary) {
+		this.salary = salary;
+	}*/
 }

@@ -22,8 +22,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		this.employeeDao = employeeDao;
 	}
 
-	public void saveEmployee(Employee employee) {
-		employeeDao.saveEmployee(employee);
+	public Employee saveEmployee(Employee employee) {
+		return employeeDao.saveEmployee(employee);
 	}
 
 	public void deleteEmployee(Employee employee) {

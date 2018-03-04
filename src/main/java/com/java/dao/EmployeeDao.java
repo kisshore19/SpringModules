@@ -5,7 +5,8 @@ import java.util.List;
 import com.java.entities.Employee;
 
 public interface EmployeeDao {
-	public void saveEmployee(Employee employee);
+	
+	public Employee saveEmployee(Employee employee);
 
 	public void deleteEmployee(Employee employee);
 

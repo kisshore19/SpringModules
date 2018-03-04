@@ -1,5 +1,7 @@
 package com.java.common.dao;
 
+import java.io.Serializable;
+
 import javax.transaction.Transactional;
 
 import org.hibernate.Session;
@@ -13,8 +15,9 @@ public abstract class AbstractDao {
 	ConnectionFactory connectionFactory;
 
 	// Saving object
-	public void save(Object object) {
-		connectionFactory.getSession().persist(object);
+	public Serializable save(Object object) {
+		//connectionFactory.getSession().persist(object);
+		return connectionFactory.getSession().save(object);
 
 	}
 
