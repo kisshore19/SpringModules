@@ -3,7 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
@@ -12,7 +13,7 @@
 
 	<context:component-scan base-package="com.java"></context:component-scan>
 	<context:annotation-config></context:annotation-config>
-	<tx:annotation-driven transaction-manager="txnManager" />
+	<tx:annotation-driven transaction-manager="txnManager"/>
 
 	<!-- <bean id="printBean" class="com.kishore.beans.PrintBeanProps"></bean> -->
 
@@ -21,7 +22,7 @@
 		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/employees" />
 		<property name="username" value="root" />
 		<property name="password" value="kishore" />
-		<property name="maximumPoolSize" value="1" />
+		<property name="maximumPoolSize" value="5" />
 	</bean>
 
 
@@ -58,7 +59,9 @@
 
 		<property name="packagesToScan">
 			<list>
+				<value>com.java.beans</value>
 				<value>com.java.entities</value>
+				<value>com.java.entities.onetoone</value>
 			</list>
 		</property>
 

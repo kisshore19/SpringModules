@@ -16,8 +16,8 @@ public abstract class AbstractDao {
 
 	// Saving object
 	public Serializable save(Object object) {
-		//connectionFactory.getSession().persist(object);
-		return connectionFactory.getSession().save(object);
+		connectionFactory.getSession().persist(object);
+		return null;///connectionFactory.getSession().save(object);
 
 	}
 

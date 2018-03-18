@@ -3,35 +3,72 @@ package com.java.beans;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.java.entities.Employee;
 import com.java.entities.Salary;
-import com.java.service.DepartmentService;
-import com.java.service.EmployeeService;
-import com.java.service.SalaryService;
+import com.java.entities.onetoone.PassportDetails;
+import com.java.entities.onetoone.PersonDetails;
+import com.java.service.PostService;
 public class TestCalss {
 
 	public static void main(String[] args) {
 
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-confix.xml");
-		EmployeeService dd = (EmployeeService) applicationContext.getBean("employeeService");
+		
+		Comment comment = new Comment();
+		comment.setComment("Taja comment");
+		PostService postService = (PostService) applicationContext.getBean("postService");
+		
+		TestCalss testCalss = new TestCalss();
+		Post createNewPost = testCalss.createNewPost();
+		/*Set<Comment> comments = new HashSet<Comment>();
+		comment.setPost(createNewPost);
+		comments.add(comment);
+		createNewPost.setComments(comments);
+		postService.savePost(createNewPost);
+		*/
+		
+		comment.setPost(createNewPost);
+		postService.savePostWithComment(comment);
+		
+		/*EmployeeService dd = (EmployeeService) applicationContext.getBean("employeeService");
 		
 		
 		DepartmentService ds = (DepartmentService) applicationContext.getBean("departmentService");
 		
-		SalaryService ss = (SalaryService) applicationContext.getBean("salaryService");
+		SalaryService ss = (SalaryService) applicationContext.getBean("salaryService");*/
+		
+		/*PassportService passportService = (PassportService) applicationContext.getBean("passportService");
+		
+		PersonService personService = (PersonService) applicationContext.getBean("personService");
+		
+		
 		
 
 		TestCalss testCalss = new TestCalss();
+		
+		
+		PassportDetails createNewPassport = testCalss.createNewPassport();
+		PersonDetails createNewPerson = testCalss.createNewPerson();
+		
+		createNewPassport.setPersonDetails(createNewPerson);
+		
+		//createNewPerson.setPassportDetails(createNewPassport);
+
+		passportService.savePassport(createNewPassport);
+*/		//personService.savePerson(createNewPerson);
+		
 		/*Department department = new Department();
 		department.setDeptNo("d003");
 		Department findDepartment = ds.findDepartment(department);
 		
 		System.out.println(findDepartment.getDeptName());*/
-		Employee findEmployee = testCalss.createNewEmployees();
+	/*	Employee findEmployee = testCalss.createNewEmployees();
 		
 		//Employee saveEmployee = dd.saveEmployee(findEmployee);
 		
@@ -42,7 +79,7 @@ public class TestCalss {
 		//findEmployee.setSalary(testCalss.createNewSalary());
 		
 		ss.saveSalary(createNewSalary);
-		
+		*/
 		
 		
 		/*Employee e1 = testCalss.createNewEmployees();
@@ -133,5 +170,67 @@ public class TestCalss {
 		employee.setFirstName("KishoreUps3");
 		return employee;
 	}
+	
+	public PersonDetails createNewPerson() {
+		PersonDetails personDetails = new PersonDetails();
+		personDetails.setPersonName("kishore");
+		
+		String birthDate = "15-04-1985";
+		Date birthDateConverted = null;
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			birthDateConverted = simpleDateFormat.parse(birthDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		personDetails.setPersonDOB(birthDateConverted);
+
+		return personDetails;
+	}
+	
+	public PassportDetails createNewPassport() {
+		PassportDetails passportDetails = new PassportDetails();
+		
+		String issueDate = "15-04-2015";
+		String validityDate = "15-04-2055";
+		Date birthDateConverted = null;
+		Date validityDateConverted = null;
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			birthDateConverted = simpleDateFormat.parse(issueDate);
+			validityDateConverted = simpleDateFormat.parse(validityDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		passportDetails.setPassportNumber("k4131323");
+		passportDetails.setPassportIssueDate(birthDateConverted);
+		passportDetails.setPassportValidityDate(validityDateConverted);
+
+		return passportDetails;
+	}
+	
+	public Post createNewPost() {
+		
+		String issueDate = "15-04-2015";
+		Date birthDateConverted = null;
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			birthDateConverted = simpleDateFormat.parse(issueDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Post post = new Post();
+		post.setContent("Post two content")
+		.setDescription("Test description")
+		.setPostedOn(birthDateConverted);
+		return post;
+	}
+	
 
 }
